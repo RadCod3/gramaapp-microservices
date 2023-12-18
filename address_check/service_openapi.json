@@ -1,0 +1,275 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Service Openapi Json",
+    "version" : "0.1.0"
+  },
+  "servers" : [ {
+    "url" : "{server}:{port}/",
+    "variables" : {
+      "server" : {
+        "default" : "http://localhost"
+      },
+      "port" : {
+        "default" : "9090"
+      }
+    }
+  } ],
+  "paths" : {
+    "/validateAddress/{nic}" : {
+      "post" : {
+        "operationId" : "postValidateaddressNic",
+        "parameters" : [ {
+          "name" : "nic",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Any Response",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "description" : "Any type of entity body"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addAddress" : {
+      "post" : {
+        "operationId" : "postAddaddress",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Address"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Accepted"
+          },
+          "400" : {
+            "description" : "BadRequest"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addPerson" : {
+      "post" : {
+        "operationId" : "postAddperson",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Person"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "text/plain" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              },
+              "application/json" : {
+                "schema" : {
+                  "type" : "integer",
+                  "format" : "int64"
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Accepted"
+          },
+          "400" : {
+            "description" : "BadRequest"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getPerson" : {
+      "get" : {
+        "operationId" : "getGetperson",
+        "parameters" : [ {
+          "name" : "nic",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Person"
+                }
+              }
+            }
+          },
+          "202" : {
+            "description" : "Accepted"
+          },
+          "400" : {
+            "description" : "BadRequest"
+          },
+          "500" : {
+            "description" : "Internal server error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ErrorPayload" : {
+        "type" : "object",
+        "properties" : {
+          "reason" : {
+            "type" : "string",
+            "description" : "Reason phrase"
+          },
+          "path" : {
+            "type" : "string",
+            "description" : "Request path"
+          },
+          "method" : {
+            "type" : "string",
+            "description" : "Method type of the request"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "Error message"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "description" : "Timestamp of the error"
+          },
+          "status" : {
+            "type" : "integer",
+            "description" : "Relevant HTTP status code",
+            "format" : "int32"
+          }
+        }
+      },
+      "Address" : {
+        "required" : [ "district", "gramaDivision", "number", "province", "street" ],
+        "type" : "object",
+        "properties" : {
+          "number" : {
+            "type" : "string"
+          },
+          "street" : {
+            "type" : "string"
+          },
+          "gramaDivision" : {
+            "type" : "string"
+          },
+          "district" : {
+            "type" : "string"
+          },
+          "province" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Person" : {
+        "required" : [ "address", "firstName", "lastName", "nic" ],
+        "type" : "object",
+        "properties" : {
+          "nic" : {
+            "type" : "string"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      }
+    }
+  }
+}
