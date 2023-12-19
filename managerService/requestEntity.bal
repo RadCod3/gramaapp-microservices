@@ -6,7 +6,7 @@ public type RequestEntity record {
     int policeCheckstatus;
     int identityCheckstatus;
     int addressCheckstatus;
-    string character;
+    string|null character;
     int statusID;
     int gramaID;
 };

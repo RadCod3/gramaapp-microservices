@@ -1,3 +1,11 @@
+CREATE DATABASE  IF NOT EXISTS `applicationStates`;
+use `applicationStates`;
+
+-- Drop the tables if they already exist
+DROP TABLE IF EXISTS `request`;
+DROP TABLE IF EXISTS `requestType`;
+DROP TABLE IF EXISTS `checkstatus`;
+DROP TABLE IF EXISTS `status`;
 --creating status table
 CREATE TABLE status (
     statusID INT PRIMARY KEY AUTO_INCREMENT,

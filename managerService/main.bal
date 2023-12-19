@@ -46,11 +46,11 @@ service /management on new http:Listener(9090) {
         _ = check self.databaseService.insertRequest(requestEntity);
         return http:CREATED;
     }
-    resource function post getRequestsbyGramaID(int gramaID) returns RequestEntity[]|error{
+    resource function get getRequestsbyGramaID(int gramaID) returns RequestEntity[]|error{
         RequestEntity[] requests = check self.databaseService.getRequestByGramaID(gramaID);
         return requests;
     }
-    resource function post getRequestsbyUserID(int userId) returns RequestEntity[]|error{
+    resource function get getRequestsbyUserID(int userId) returns RequestEntity[]|error{
         RequestEntity[] requests = check self.databaseService.getRequestByUserID(userId);
         return requests;
     }
