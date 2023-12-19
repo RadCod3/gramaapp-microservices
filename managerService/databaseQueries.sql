@@ -6,13 +6,13 @@ DROP TABLE IF EXISTS `request`;
 DROP TABLE IF EXISTS `requestType`;
 DROP TABLE IF EXISTS `checkstatus`;
 DROP TABLE IF EXISTS `status`;
---creating status table
+-- creating status table
 CREATE TABLE status (
     statusID INT PRIMARY KEY AUTO_INCREMENT,
     description VARCHAR(255) NOT NULL
 );
 
---inserting values
+-- inserting values
 INSERT INTO status (description) VALUES ('pending');
 INSERT INTO status (description) VALUES ('processing');
 INSERT INTO status (description) VALUES ('rejected');
