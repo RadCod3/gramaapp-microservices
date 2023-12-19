@@ -23,15 +23,28 @@ public type Request record {|
 |};
 service /idCheck on new http:Listener(8080) {
     private Validator idValidator;
+    private IdCheckService idcheckService;
     function init() returns error? {
         self.idValidator = check new();
+        self.idcheckService = self.idValidator.getIdCheckService();
     }
 
     resource function post checkid(Request request) returns Response|error {
         string id = request.id;
-        int isValidID = self.idValidator.validateID(id);
+        int isValidID = check self.idValidator.validateID(id);
         Response|error response = {requestid:1,id:request.id,statusCode:isValidID,description:self.mapper(isValidID)};
         return response;
+    }
+    resource function post activateAccount(Request request) returns http:Created|error {
+        string id = request.id;
+        Citizen updatetdCitizen = {
+                id: id,
+                Name: "Dummy Name",
+                genderID: 1,
+                accountStatusID: 1
+            };
+        _ = check self.idcheckService.insertRecord(updatetdCitizen);
+        return http:CREATED;
     }
 
     function mapper(int statusID) returns string {

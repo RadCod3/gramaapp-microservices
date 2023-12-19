@@ -5,7 +5,10 @@ public class Validator{
     public function init() returns error? {
         self.idCheckService = check new();
     }
-    public function validateID(string id) returns int {
+    public function getIdCheckService() returns IdCheckService{
+        return self.idCheckService;
+    }
+    public function validateID(string id) returns int|error {
         if (string:length(id) == 10) {
             if !self.digits10(id){
                 return 3;
@@ -25,10 +28,17 @@ public class Validator{
         }
     } 
 
-    public function validateDB(string id) returns int{
+    public function validateDB(string id) returns int|error{
         Citizen|http:NotFound|error citizen = self.idCheckService.getRecord(id);
         if citizen is http:NotFound{
-            return 2;
+            Citizen newCitizen = {
+                id: id,
+                Name: "Dummy Name",
+                genderID: 1,
+                accountStatusID: 2
+            };
+            _ = check self.idCheckService.insertRecord(newCitizen);
+            return 1;
         }else if citizen is Citizen{
             return citizen.accountStatusID-1;
         }else{
