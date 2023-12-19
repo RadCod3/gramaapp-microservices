@@ -3,11 +3,30 @@ import ballerinax/mysql.driver as _;
 import ballerina/sql;
 import ballerina/http;
 
-configurable DatabaseConfig databaseConfig = ?;
+//configurable DatabaseConfig dbConfig = ?;
+
+type DatabaseConfig record {|
+    string host;
+    int port;
+    string user;
+    string password;
+    string database;
+|};
+
+DatabaseConfig dbConfig = {
+    host : "mysql-24a3cfbc-25bf-4e11-9c0e-4122605a9541-idchecks438588230-ch.a.aivencloud.com",
+    user : "avnadmin",
+    password : "AVNS_jo43GNj-DQkr7upsIge",
+    database : "defaultdb",
+    port : 17768
+};
+
+
+
 public class IdCheckService{
     private mysql:Client db;
     public function init() returns error? {
-        self.db = check new (databaseConfig.url,databaseConfig.userName,databaseConfig.password,databaseConfig.defaultdb,databaseConfig.port);
+        self.db = check new (dbConfig.host,dbConfig.user,dbConfig.password,dbConfig.database,dbConfig.port);
     }
 
     public function getRecord(string id) returns Citizen|http:NotFound|error{
