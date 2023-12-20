@@ -1,0 +1,8 @@
+[package]
+org = "imalsha_puranegedara"
+name = "identity_check_api"
+version = "0.1.0"
+distribution = "2201.8.4"
+
+[build-options]
+observabilityIncluded = true
