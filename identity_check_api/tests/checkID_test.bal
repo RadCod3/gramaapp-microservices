@@ -20,7 +20,6 @@ function testforcheckid() {
     json expected = {requestid:1,id:"987654321V",statusCode:0,description:"Valid and Active"};
     test:assertEquals(result, expected);
 }
-
 @test:AfterGroups {value: ["checkid"]}
 function after_check_status_test() {
     io:println("Completed the check status tests");
