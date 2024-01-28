@@ -16,19 +16,19 @@ public type Name record {|
     string familyName;
 |};
 
-public type GroupsItem record {|
+public type GroupsItem record {
     string display;
     string value;
     string \$ref;
-|};
+};
 
-public type Urn\:scim\:wso2\:schema record {|
+public type Urn\:scim\:wso2\:schema record {
     string userSource;
     string idpType;
     string isReadOnlyUser;
-|};
+};
 
-public type InternsOrgUser record {|
+public type InternsOrgUser record {
     string[] emails;
     Meta meta;
     string[] schemas;
@@ -38,4 +38,4 @@ public type InternsOrgUser record {|
     string id;
     string userName;
     Urn\:scim\:wso2\:schema urn\:scim\:wso2\:schema;
-|};
+};
