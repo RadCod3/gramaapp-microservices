@@ -1,10 +1,12 @@
-import ballerina/io;
+import ballerina/http;
 configurable AsgardeoConfig asgardeoConfig = ?;
-public function main() {
-    DataRetriever dataRetriever = new(asgardeoConfig);
-    error? fetchUserData = dataRetriever.fetchUserData("117f85eb-6463-4325-9673-b585c7017ccb");
-    if fetchUserData is error {
-        io:println(fetchUserData);
+service /Users on new http:Listener(9090) {
+    private DataRetriever dataRetriever;
+    function init() returns error? {
+        self.dataRetriever =  new(asgardeoConfig);
     }
-
+    resource function post getUser(string userID) returns InternsOrgUser|error? {
+        InternsOrgUser|error? fetchUserData = self.dataRetriever.fetchUserData(userID);
+        return fetchUserData;
+    }
 }

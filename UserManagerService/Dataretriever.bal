@@ -8,7 +8,7 @@ public class DataRetriever{
         self.asgardeoConfig = asgardeoConfig;
     }
 
-    public function fetchUserData(string userId) returns error?{
+    public function fetchUserData(string userId) returns InternsOrgUser|error?{
         string accessToken = check self.accessTokenHnadler.getToken(self.asgardeoConfig.clientID,self.asgardeoConfig.clientSecret,
             self.asgardeoConfig.scope,self.asgardeoConfig.orgname);
         io:println(accessToken);
@@ -19,7 +19,7 @@ public class DataRetriever{
             "Authorization": auth
         };
         InternsOrgUser asgardeoUser = check acessClient->get(string `/t/${self.asgardeoConfig.orgname}/scim2/Users/${userId}`,headers);
-        io:println(asgardeoUser.name);
+        return asgardeoUser;
 
     }
 }
