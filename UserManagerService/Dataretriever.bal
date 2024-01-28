@@ -8,7 +8,7 @@ public class DataRetriever{
         self.asgardeoConfig = asgardeoConfig;
     }
 
-    public function fetchUserData(string userId) returns InternsOrgUser|error?{
+    public function fetchUserData(string userId) returns InternsOrgUser|error{
         string accessToken = check self.accessTokenHnadler.getToken(self.asgardeoConfig.clientID,self.asgardeoConfig.clientSecret,
             self.asgardeoConfig.scope,self.asgardeoConfig.orgname);
         io:println(accessToken);
