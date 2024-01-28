@@ -40,7 +40,7 @@ INSERT INTO requestType (description) VALUES ('Grama Certificate');
 
 CREATE TABLE request (
     requestID INT PRIMARY KEY AUTO_INCREMENT,
-    userID INT,
+    userID VARCHAR(50),
     reason VARCHAR(255),
     requestTypeID INT,
     policeCheckstatus INT,
@@ -56,7 +56,7 @@ CREATE TABLE request (
 
 -- Add the gramaID column to the request table
 ALTER TABLE request
-ADD COLUMN gramaID INT;
+ADD COLUMN gramaID VARCHAR(50);
 
 -- Add the character column to the request table
 ALTER TABLE request
