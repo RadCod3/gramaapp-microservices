@@ -22,16 +22,25 @@ public class IdCheckService{
 
     public function insertRecord(Citizen citizen) returns Citizen|error{
         _ = check self.db->execute(`
-            INSERT INTO Citizen (id, Name, genderID, accountStatusID)
-            VALUES (${citizen.id}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID});`);
+            INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID)
+            VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID});`);
         return citizen;
     }
 
     public function updateRecord(Citizen citizen) returns  Citizen|error{
         _ = check self.db->execute(`UPDATE Citizen
             SET accountStatusID = ${citizen.accountStatusID}
-            WHERE id =${citizen.id};
+            WHERE Userid =${citizen.UserID};
             `);
         return citizen;
+    }
+    public function getCitizenByGramaID(string gramaID) returns Citizen[]|error {
+        // Execute the SQL query to fetch records based on gramaID
+        stream<Citizen, sql:Error?> citizenStream = self.db->query(`
+            SELECT * FROM Citizen WHERE gramaID = ${gramaID} and accountStatusID = 2`);
+
+        // Process the stream and convert results to Citizen[] or return error
+        return from Citizen citizen in citizenStream
+            select citizen;
     }
 }

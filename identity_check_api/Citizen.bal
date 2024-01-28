@@ -1,16 +1,20 @@
 # Description.
 #
-# + id - id Number  
-# + Name - Name
-# + genderID - Gender
-#   0-Male
-#   1-Female
-# + accountStatusID - Acocunt status
-#   0 -Active
-#   1 - Suspended
+# + UserID - field description  
+# + NIC - id Number  
+# + Name - Name  
+# + genderID - Gender  
+# 0-Male  
+# 1-Female  
+# + accountStatusID - Acocunt status  
+# 0 -Active  
+# 1 - Suspended  
+# + grama_id - field description
 public type Citizen record {|
-    string id;
+    string UserID;
+    string NIC;
     string Name;
     int genderID;
     int accountStatusID;
+    string grama_id;
 |};

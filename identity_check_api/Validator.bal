@@ -8,19 +8,19 @@ public class Validator{
     public function getIdCheckService() returns IdCheckService{
         return self.idCheckService;
     }
-    public function validateID(string id) returns int|error {
+    public function validateID(string id,string userID,string name,string grama_id) returns int|error {
         if (string:length(id) == 10) {
             if !self.digits10(id){
                 return 3;
             }else{
-                return self.validateDB(id);
+                return self.validateDB(id,userID,name,grama_id);
             }
         }
         else if (string:length(id) == 12)  {
             if !self.digits12(id){
                 return 3;
             }else{
-                return self.validateDB(id);
+                return self.validateDB(id,userID,name,grama_id);
             }
         }
         else{
@@ -28,14 +28,16 @@ public class Validator{
         }
     } 
 
-    public function validateDB(string id) returns int|error{
+    public function validateDB(string id,string UserID,string Name,string grama_id) returns int|error{
         Citizen|http:NotFound|error citizen = self.idCheckService.getRecord(id);
         if citizen is http:NotFound{
             Citizen newCitizen = {
-                id: id,
-                Name: "Dummy Name",
+                UserID:UserID,
+                NIC: id,
+                Name: Name,
                 genderID: 1,
-                accountStatusID: 2
+                accountStatusID: 2,
+                grama_id:grama_id
             };
             _ = check self.idCheckService.insertRecord(newCitizen);
             return 1;

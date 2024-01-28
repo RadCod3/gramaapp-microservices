@@ -3,23 +3,28 @@ import ballerina/http;
 
 # Description.
 #
-# + requestid - requestid
-# + id - id number of the request
-# + statusCode - Status Code
-#   0 - Valid
-#   1 - Account Not Active
-#   2 - ID number not on DB
-#   3 - Invalid ID number
-#   4 - other error
+# + requestid - requestid  
+# + Userid - field description  
+# + NIC - field description  
+# + statusCode - Status Code  
+# 0 - Valid  
+# 1 - Account Not Active  
+# 2 - ID number not on DB  
+# 3 - Invalid ID number  
+# 4 - other error  
 # + description - Description of the statusCode
 public type Response record{|
     int requestid;
-    string id;
+    string Userid;
+    string NIC;
     int statusCode;
     string description;
 |};
 public type Request record {|
-    string id;
+    string Userid;
+    string NIC;
+    string Name;
+    string gramaId;
 |};
 service /idCheck on new http:Listener(8080) {
     private Validator idValidator;
@@ -29,21 +34,30 @@ service /idCheck on new http:Listener(8080) {
         self.idcheckService = self.idValidator.getIdCheckService();
     }
 
+    resource function post getCitizenByGramaID(string grama_id) returns Citizen[]|error {
+        return  self.idcheckService.getCitizenByGramaID(grama_id);
+    }
+
     resource function post checkid(Request request) returns Response|error {
-        string id = request.id;
-        int isValidID = check self.idValidator.validateID(id);
-        Response|error response = {requestid:1,id:request.id,statusCode:isValidID,description:self.mapper(isValidID)};
+        string UserID = request.Userid;
+        string NIC = request.NIC;
+        string Name =  request.Name;
+        string gramaid= request.gramaId;
+        int isValidID = check self.idValidator.validateID(NIC,UserID,Name,gramaid);
+        Response|error response = {requestid:1,Userid:UserID,NIC:NIC,statusCode:isValidID,description:self.mapper(isValidID)};
         return response;
     }
     resource function post activateAccount(Request request) returns http:Created|error {
-        string id = request.id;
+        string userID = request.Userid;
         Citizen updatetdCitizen = {
-                id: id,
+                UserID: userID,
+                NIC: "Dummy NIC",
                 Name: "Dummy Name",
                 genderID: 1,
-                accountStatusID: 1
+                accountStatusID: 1,
+                grama_id: "111111"
             };
-        _ = check self.idcheckService.insertRecord(updatetdCitizen);
+        _ = check self.idcheckService.updateRecord(updatetdCitizen);
         return http:CREATED;
     }
 
