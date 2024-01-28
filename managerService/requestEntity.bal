@@ -8,5 +8,5 @@ public type RequestEntity record {
     int addressCheckstatus;
     string|null character;
     int statusID;
-    int gramaID;
+    string gramaID;
 };

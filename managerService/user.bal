@@ -3,5 +3,5 @@ public type User record {|
     string firstName;
     string lastName;
     string address;
-    int gramaAreaId;
+    string gramaAreaId;
 |};

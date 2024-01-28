@@ -6,7 +6,7 @@ public class Decorder {
         firstName: "John",
         lastName: "Doe",
         address: "123 Main Street",
-        gramaAreaId: 1001
+        gramaAreaId: "MG_01"
         };
         return dummyUser;
     }

@@ -4,7 +4,7 @@ public type SlackWebHook record{|
 |};
 
 public type Message record{|
-    int userId;
+    string userId;
     string userName;
     string email;
     string message;
