@@ -86,7 +86,7 @@ public class DatabaseService {
             addressCheckstatus = ${request.addressCheckstatus},
             statusID = ${request.statusID},
             characterW = ${request.characterW},
-            gramaID = ${request.gramaID},
+            gramaID = ${request.gramaID}
         WHERE requestID = ${request.requestID};
     `);
         _= check db.close();
