@@ -83,7 +83,7 @@ service /management on new http:Listener(9090) {
         if requestEntity.character == "" {
             return error("Character can't be null");
         }
-        _ = check self.databaseService.insertRequest(requestEntity);
+        _ = check self.databaseService.updateRequest(requestEntity);
         return http:CREATED;
     }
     resource function get getRequestsbyGramaID(string gramaID) returns RequestEntity[]|error {
