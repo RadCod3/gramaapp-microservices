@@ -41,7 +41,7 @@ public class DatabaseService {
         _= check db.close();
         return true;
     }
-    public function getRequestByGramaID(int gramaID) returns RequestEntity[]|error {
+    public function getRequestByGramaID(string gramaID) returns RequestEntity[]|error {
         // Execute the SQL query to fetch records based on gramaID
         mysql:Client db = check self.createDB();
         stream<RequestEntity, sql:Error?> requestStream = db->query(`
@@ -52,7 +52,7 @@ public class DatabaseService {
         return from RequestEntity request in requestStream
             select request;
     }
-    public function getRequestByUserID(int userID) returns RequestEntity[]|error {
+    public function getRequestByUserID(string userID) returns RequestEntity[]|error {
         mysql:Client db = check self.createDB();
         // Execute the SQL query to fetch records based on userID
         stream<RequestEntity, sql:Error?> requestStream = db->query(`

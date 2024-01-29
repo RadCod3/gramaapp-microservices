@@ -29,6 +29,21 @@ service /management on new http:Listener(9090) {
         };
         return requestEntity;
     }
+    public function mapToRequestEntityCitizen(Citizen citizen, GramaRequest gramaRequest, int idcheck, int addresscheck) returns RequestEntity {
+        RequestEntity requestEntity = {
+            requestID: 0, // Initialize with default value or retrieve from a sequence or other source
+            userID: citizen.UserID,
+            reason: gramaRequest.reason,
+            requestTypeID: 1, // Provide appropriate value
+            policeCheckstatus: 2, // Provide appropriate value
+            identityCheckstatus: idcheck, // Provide appropriate value
+            addressCheckstatus: addresscheck, // Provide appropriate value
+            character: "", // Provide appropriate value
+            statusID: 1, // Provide appropriate value
+            gramaID: citizen.gramaID
+        };
+        return requestEntity;
+    }
     resource function post request(@http:Payload GramaRequest gramaRequest) returns http:Created|error {
         User user = check self.decorder.decode(gramaRequest.accessToken);
         // todo
@@ -71,11 +86,11 @@ service /management on new http:Listener(9090) {
         _ = check self.databaseService.insertRequest(requestEntity);
         return http:CREATED;
     }
-    resource function get getRequestsbyGramaID(int gramaID) returns RequestEntity[]|error {
+    resource function get getRequestsbyGramaID(string gramaID) returns RequestEntity[]|error {
         RequestEntity[] requests = check self.databaseService.getRequestByGramaID(gramaID);
         return requests;
     }
-    resource function get getRequestsbyUserID(int userId) returns RequestEntity[]|error {
+    resource function get getRequestsbyUserID(string userId) returns RequestEntity[]|error {
         RequestEntity[] requests = check self.databaseService.getRequestByUserID(userId);
         return requests;
     }

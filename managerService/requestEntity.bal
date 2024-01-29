@@ -1,6 +1,6 @@
 public type RequestEntity record {
     int requestID;
-    int userID;
+    string userID;
     string reason;
     int requestTypeID;
     int policeCheckstatus;

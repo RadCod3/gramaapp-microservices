@@ -9,11 +9,11 @@ service /getUsers on new http:Listener(9090) {
         InternsOrgUser xx = check dataRetriever.fetchUserData(userID);
         string userName = xx.userName;
         SimpleUser user = {
-        email: "user@example.com",
-        name: userName,
-        id: "123456",
-        userName: "john_doe",
-        NIC: "123-456-789"
+        email: xx.emails[0],
+        name: xx.name.givenName+xx.name.familyName,
+        id: xx.id,
+        userName: xx.userName,
+        NIC: xx.id
     };
         return user;
     }
