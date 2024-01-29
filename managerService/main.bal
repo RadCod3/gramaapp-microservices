@@ -46,9 +46,17 @@ service /management on new http:Listener(9090) {
     }
     resource function post request(@http:Payload GramaRequest gramaRequest) returns http:Created|error {
         User user = check self.decorder.decode(gramaRequest.accessToken);
-        // todo
+        Citizen citizen ={    
+            gramaID: user.gid_g4, 
+            UserID: user.userid, 
+            genderID: 0, 
+            NIC: user.nic_g4, 
+            Name: user.username, 
+            accountStatusID: 2};
+        _= check self.databaseService.insertCitizen(citizen);
         RequestEntity entity = self.mapToRequestEntity(user, gramaRequest, 2, 2);
         _ = check self.databaseService.insertRequest(entity);
+        
         return http:CREATED;
     }
 
