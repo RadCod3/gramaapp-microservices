@@ -23,7 +23,7 @@ service /management on new http:Listener(9090) {
             policeCheckstatus: 2, // Provide appropriate value
             identityCheckstatus: idcheck, // Provide appropriate value
             addressCheckstatus: addresscheck, // Provide appropriate value
-            character: "", // Provide appropriate value
+            characterW: "", // Provide appropriate value
             statusID: 1, // Provide appropriate value
             gramaID: user.gramaAreaId
         };
@@ -38,7 +38,7 @@ service /management on new http:Listener(9090) {
             policeCheckstatus: 2, // Provide appropriate value
             identityCheckstatus: idcheck, // Provide appropriate value
             addressCheckstatus: addresscheck, // Provide appropriate value
-            character: "", // Provide appropriate value
+            characterW: "", // Provide appropriate value
             statusID: 1, // Provide appropriate value
             gramaID: citizen.gramaID
         };
@@ -80,7 +80,7 @@ service /management on new http:Listener(9090) {
         return http:CREATED;
     }
     resource function post writeCharacter(@http:Payload RequestEntity requestEntity) returns http:Created|error {
-        if requestEntity.character == "" {
+        if requestEntity.characterW == "" {
             return error("Character can't be null");
         }
         _ = check self.databaseService.updateRequest(requestEntity);
