@@ -28,6 +28,11 @@ type AsgardeoConfig record {|
 
 configurable AsgardeoConfig asgardeoConfig = ?;
 
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"]
+    }
+}
 service / on new http:Listener(9090) {
     # Get user info from asgardeo
     # + accessToken - string

@@ -28,7 +28,11 @@ type DatabaseConfig record {|
 
 configurable DatabaseConfig dbConfig = ?;
 
-
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"]
+    }
+}
 service / on new http:Listener(9090) {
     resource function post validateAddress/[string nic](Address address) returns http:Response|error{
         Person person = check getPerson(nic);

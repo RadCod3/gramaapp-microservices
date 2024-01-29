@@ -26,6 +26,13 @@ public type Request record {|
     string Name;
     string gramaId;
 |};
+
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"]
+    }
+}
+
 service /idCheck on new http:Listener(8080) {
     private Validator idValidator;
     private IdCheckService idcheckService;

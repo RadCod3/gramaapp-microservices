@@ -11,6 +11,12 @@ public type Message record{|
 |};
 configurable SlackWebHook SLACKURL = ?;
 http:Client slackClient = check new (SLACKURL.URL);
+
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"]
+    }
+}
 service /PostSlackMessage on new http:Listener(9090) {
     resource function post postMessage(@http:Payload Message message) returns http:Ok|error? {
         string msg = string 
