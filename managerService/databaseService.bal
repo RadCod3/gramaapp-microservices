@@ -85,7 +85,7 @@ public class DatabaseService {
             identityCheckstatus = ${request.identityCheckstatus},
             addressCheckstatus = ${request.addressCheckstatus},
             statusID = ${request.statusID},
-            'character' = ${request.character},
+            characterW = ${request.characterW},
             gramaID = ${request.gramaID},
         WHERE requestID = ${request.requestID};
     `);
