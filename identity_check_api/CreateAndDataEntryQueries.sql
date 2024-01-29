@@ -1,3 +1,12 @@
+CREATE DATABASE  IF NOT EXISTS `idcheckdb`;
+use `idcheckdb`;
+
+-- Drop the tables if they already exist
+
+DROP TABLE IF EXISTS `Citizen`;
+DROP TABLE IF EXISTS `status`;
+DROP TABLE IF EXISTS `Gender`;
+
 CREATE TABLE status (
     statusID INT AUTO_INCREMENT PRIMARY KEY,
     statusName VARCHAR(255) NOT NULL
@@ -32,7 +41,7 @@ CREATE TABLE Citizen (
 );
 
 -- Insert user with ID format (0-9)*(X|V)
-INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID) VALUES ("M_01",'987654321V', 'Tharushi',"MG_01", 2, 1);
+INSERT INTO Citizen (Userid,NIC ,Name, gramaID, genderID, accountStatusID) VALUES ('M_01','987654321V', 'Tharushi','MG_01', 2, 1);
 -- Insert user with ID format (0-9)*(X|V)
-INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID) VALUES ("M_02",'996789012X', 'Kamal',"MG_01", 1, 2);
+INSERT INTO Citizen (Userid,NIC, Name, gramaID, genderID, accountStatusID) VALUES ('M_02','996789012X', 'Kamal', 'MG_01', 1, 2);
 
