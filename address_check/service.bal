@@ -30,14 +30,9 @@ configurable DatabaseConfig dbConfig = ?;
 
 
 service / on new http:Listener(9090) {
-    private final mysql:Client db;
-    function init() returns error? {
-        self.db = check new (...dbConfig);
-    };
-
     resource function post validateAddress/[string nic](Address address) returns http:Response|error{
-        Person person = check getPerson(self.db, nic);
-        Address personAddress = check getAddress(self.db, person.address);
+        Person person = check getPerson(nic);
+        Address personAddress = check getAddress(person.address);
         boolean isValid = personAddress.number.equalsIgnoreCaseAscii(address.number) && 
                             personAddress.street.equalsIgnoreCaseAscii(address.street) && 
                             personAddress.gramaDivision.equalsIgnoreCaseAscii(address.gramaDivision) && 
@@ -51,42 +46,51 @@ service / on new http:Listener(9090) {
     }
 
     resource function post addAddress(Address address) returns string|int|error? {
+        mysql:Client db = check new (...dbConfig);
         
         sql:ParameterizedQuery insertAddress = `INSERT INTO address (number, street, gramaDivision, district, province) 
                                                 VALUES (${address.number}, ${address.street}, ${address.gramaDivision}, 
                                                 ${address.district}, ${address.province})`;
 
-        sql:ExecutionResult result = check self.db->execute(insertAddress);
+        sql:ExecutionResult result = check db->execute(insertAddress);
         string|int? lastInsertId = result.lastInsertId;
+        _= check db.close();
         return lastInsertId;
     };
 
     resource function post addPerson(Person person) returns string|int|error? {
+        mysql:Client db = check new (...dbConfig);
         sql:ParameterizedQuery insertPerson = `INSERT INTO person (nic, firstName, lastName, address) 
                                                 VALUES (${person.nic}, ${person.firstName}, ${person.lastName}, 
                                                 ${person.address})`;
 
-        sql:ExecutionResult result = check self.db->execute(insertPerson);
+        sql:ExecutionResult result = check db->execute(insertPerson);
         string|int? lastInsertId = result.lastInsertId;
+        _= check db.close();
         return lastInsertId;
     };
 
     resource function get getPerson(string nic) returns Person|error? {
-        return check getPerson(self.db, nic);
+
+        return check getPerson(nic);
     };
 
 
 
 };
 
-function getPerson(mysql:Client db, string nic) returns Person|error {
+function getPerson(string nic) returns Person|error {
+    mysql:Client db = check new (...dbConfig);
     sql:ParameterizedQuery selectPerson = `SELECT nic, firstName, lastName, address FROM person WHERE nic = ${nic}`;
     Person person = check db->queryRow(selectPerson);
+    _= check db.close();
     return person;
 };
 
-function getAddress(mysql:Client db, int addressId) returns Address|error {
+function getAddress(int addressId) returns Address|error {
+    mysql:Client db = check new (...dbConfig);
     sql:ParameterizedQuery selectAddress = `SELECT number, street, gramaDivision, district, province FROM address WHERE addressId = ${addressId}`;
     Address address = check db->queryRow(selectAddress);
+    _= check db.close();
     return address;
 };
