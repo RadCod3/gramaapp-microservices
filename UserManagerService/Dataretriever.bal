@@ -8,7 +8,7 @@ public class DataRetriever{
         self.asgardeoConfig = asgardeoConfig;
     }
 
-    public function fetchUserData(string userId) returns InternsOrgUser|error{
+    public function fetchUserData(string userId) returns GramaOrgUser|error{
         string accessToken = check self.accessTokenHnadler.getToken(self.asgardeoConfig.clientID,self.asgardeoConfig.clientSecret,
             self.asgardeoConfig.scope,self.asgardeoConfig.orgname);
         io:println(accessToken);
@@ -18,7 +18,7 @@ public class DataRetriever{
             "accept": "application/scim+json",
             "Authorization": auth
         };
-        InternsOrgUser asgardeoUser = check acessClient->get(string `/t/${self.asgardeoConfig.orgname}/scim2/Users/${userId}`,headers);
+        GramaOrgUser asgardeoUser = check acessClient->get(string `/t/${self.asgardeoConfig.orgname}/scim2/Users/${userId}`,headers);
         return asgardeoUser;
 
     }

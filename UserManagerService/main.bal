@@ -6,14 +6,13 @@ DataRetriever dataRetriever = new(asgardeoConfig);
 service /getUsers on new http:Listener(9090) {
     
     resource function post getUser(string userID) returns SimpleUser|error {
-        InternsOrgUser xx = check dataRetriever.fetchUserData(userID);
-        string userName = xx.userName;
+        GramaOrgUser  gramaOrgUser =  check dataRetriever.fetchUserData(userID);
         SimpleUser user = {
-        email: xx.emails[0],
-        name: xx.name.givenName+xx.name.familyName,
-        id: xx.id,
-        userName: xx.userName,
-        NIC: xx.id
+        email: gramaOrgUser.emails[0],
+        name: gramaOrgUser.name.givenName+gramaOrgUser.name.familyName,
+        id: gramaOrgUser.id,
+        userName: gramaOrgUser.userName,
+        NIC: gramaOrgUser.urn\:scim\:wso2\:schema.nic_g4
     };
         return user;
     }
