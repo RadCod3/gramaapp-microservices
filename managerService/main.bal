@@ -11,7 +11,7 @@ service /management on new http:Listener(9090) {
     private DatabaseService databaseService;
     function init() returns error? {
         self.decorder = new ();
-        self.databaseService = check new ();
+        self.databaseService = new ();
     }
 
     public function mapToRequestEntity(User user, GramaRequest gramaRequest, int idcheck, int addresscheck) returns RequestEntity {
@@ -43,7 +43,25 @@ service /management on new http:Listener(9090) {
         } else {
             requestEntity.policeCheckstatus = 1;
         }
-        _ = check self.databaseService.insertRequest(requestEntity);
+        _ = check self.databaseService.updateRequest(requestEntity);
+        return http:CREATED;
+    }
+    resource function post idApprove(@http:Payload RequestEntity requestEntity, boolean approve) returns http:Created|error {
+        if approve {
+            requestEntity.identityCheckstatus = 3;
+        } else {
+            requestEntity.identityCheckstatus = 1;
+        }
+        _ = check self.databaseService.updateRequest(requestEntity);
+        return http:CREATED;
+    }
+    resource function post addressApprove(@http:Payload RequestEntity requestEntity, boolean approve) returns http:Created|error {
+        if approve {
+            requestEntity.addressCheckstatus = 3;
+        } else {
+            requestEntity.addressCheckstatus = 1;
+        }
+        _ = check self.databaseService.updateRequest(requestEntity);
         return http:CREATED;
     }
     resource function post writeCharacter(@http:Payload RequestEntity requestEntity) returns http:Created|error {

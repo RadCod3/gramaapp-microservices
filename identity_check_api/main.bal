@@ -33,7 +33,9 @@ service /idCheck on new http:Listener(8080) {
         self.idValidator = check new();
         self.idcheckService = self.idValidator.getIdCheckService();
     }
-
+    resource function post putCitizen(Citizen citizen) returns Citizen|error {
+        return self.idcheckService.insertRecord(citizen);
+    }
     resource function post getCitizenByGramaID(string grama_id) returns Citizen[]|error {
         return  self.idcheckService.getCitizenByGramaID(grama_id);
     }

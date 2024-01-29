@@ -22,11 +22,14 @@ public class IdCheckService{
     }
 
     public function insertRecord(Citizen citizen) returns Citizen|error{
-        mysql:Client db = check self.createDB();
-        _ = check db->execute(`
-            INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID, gramaID)
-            VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID}, ${citizen.gramaID});`);
-        _= check db.close();
+        Citizen|http:NotFound|error result = self.getRecord(citizen.UserID);
+        if result is http:NotFound{
+            mysql:Client db = check self.createDB();
+            _ = check db->execute(`
+                INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID, gramaID)
+                VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID}, ${citizen.gramaID});`);
+            _= check db.close();
+        }
         return citizen;
     }
 
