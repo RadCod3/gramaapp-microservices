@@ -37,7 +37,7 @@ public class Validator{
                 Name: Name,
                 genderID: 1,
                 accountStatusID: 2,
-                grama_id:grama_id
+                gramaID:grama_id
             };
             _ = check self.idCheckService.insertRecord(newCitizen);
             return 1;

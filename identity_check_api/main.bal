@@ -55,7 +55,7 @@ service /idCheck on new http:Listener(8080) {
                 Name: "Dummy Name",
                 genderID: 1,
                 accountStatusID: 1,
-                grama_id: "111111"
+                gramaID: "111111"
             };
         _ = check self.idcheckService.updateRecord(updatetdCitizen);
         return http:CREATED;
