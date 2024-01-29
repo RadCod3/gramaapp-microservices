@@ -1,5 +1,4 @@
 import ballerina/http;
-import ballerina/io;
 
 type Address record {
     string country?;
@@ -41,10 +40,8 @@ service / on new http:Listener(9090) {
         });
         UserInfo|http:ClientError response = asgardeoClient->get("/userinfo");
         if (response is http:ClientError) {
-            io:println(response.message());
             return error("Error occurred while getting user info from asgardeo");
         }
-        io:println(response);
         return response;
 
     };

@@ -1,5 +1,4 @@
 import ballerina/http;
-import ballerina/io;
 
 type DecoderConfig record{|
     string decoderEndpoint;

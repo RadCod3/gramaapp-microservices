@@ -17,7 +17,7 @@ service /management on new http:Listener(9090) {
     public function mapToRequestEntity(User user, GramaRequest gramaRequest, int idcheck, int addresscheck) returns RequestEntity {
         RequestEntity requestEntity = {
             requestID: 0, // Initialize with default value or retrieve from a sequence or other source
-            userID: user.userId,
+            userID: user.userid,
             reason: gramaRequest.reason,
             requestTypeID: 1, // Provide appropriate value
             policeCheckstatus: 2, // Provide appropriate value
@@ -25,7 +25,7 @@ service /management on new http:Listener(9090) {
             addressCheckstatus: addresscheck, // Provide appropriate value
             characterW: "", // Provide appropriate value
             statusID: 1, // Provide appropriate value
-            gramaID: user.gramaAreaId
+            gramaID: user.gid_g4
         };
         return requestEntity;
     }
