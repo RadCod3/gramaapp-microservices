@@ -3,7 +3,7 @@ import ballerina/io;
 public class Validator{
     private IdCheckService idCheckService;
     public function init() returns error? {
-        self.idCheckService = check new();
+        self.idCheckService = new();
     }
     public function getIdCheckService() returns IdCheckService{
         return self.idCheckService;

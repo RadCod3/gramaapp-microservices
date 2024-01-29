@@ -3,5 +3,6 @@ public type DatabaseConfig record{|
     string userName;
     string password;
     string defaultdb;
+    string citizendb;
     int port;
 |};

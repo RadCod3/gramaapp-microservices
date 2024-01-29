@@ -6,10 +6,31 @@ import ballerinax/mysql.driver as _;
 configurable DatabaseConfig dbConfig = ?;
 
 public class DatabaseService {
-        public function createDB() returns mysql:Client|error{
+    public function createDB() returns mysql:Client|error{
         return check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.defaultdb,dbConfig.port);
     }
-        public function insertRequest(RequestEntity request) returns boolean|error {
+    public function getRecord(string id) returns Citizen|http:NotFound|error{
+        mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
+        Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where id =${id}`);
+        _= check db.close();
+        if result is sql:NoRowsError {
+            return http:NOT_FOUND;
+        } else {
+            return result;
+        }
+    }
+    public function insertCitizen(Citizen citizen) returns Citizen|error{
+        Citizen|http:NotFound|error result = self.getRecord(citizen.UserID);
+        if result is http:NotFound{
+            mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
+            _ = check db->execute(`
+                INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID, gramaID)
+                VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID}, ${citizen.gramaID});`);
+            _= check db.close();
+        }
+        return citizen;
+    }
+    public function insertRequest(RequestEntity request) returns boolean|error {
         mysql:Client db = check self.createDB();
         _ = check db->execute(`
         INSERT INTO request (userID, reason, requestTypeID, policeCheckstatus, 
