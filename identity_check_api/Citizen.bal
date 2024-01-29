@@ -16,5 +16,5 @@ public type Citizen record {|
     string Name;
     int genderID;
     int accountStatusID;
-    string grama_id;
+    string gramaID;
 |};

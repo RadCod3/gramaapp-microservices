@@ -24,6 +24,7 @@ CREATE TABLE Citizen (
     Userid VARCHAR(50) PRIMARY KEY,
     NIC VARCHAR(20) NOT NULL,
     Name VARCHAR(255) NOT NULL,
+    gramaID VARCHAR(50) NOT NuLL,
     genderID INT,
     accountStatusID INT,
     FOREIGN KEY (genderID) REFERENCES Gender(GenderID),
