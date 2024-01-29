@@ -12,7 +12,7 @@ public class IdCheckService{
     }
     public function getRecord(string id) returns Citizen|http:NotFound|error{
         mysql:Client db = check self.createDB();
-        Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where id =${id}`);
+        Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where Userid =${id}`);
         _= check db.close();
         if result is sql:NoRowsError {
             return http:NOT_FOUND;

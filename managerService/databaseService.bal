@@ -11,7 +11,7 @@ public class DatabaseService {
     }
     public function getRecord(string id) returns Citizen|http:NotFound|error{
         mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
-        Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where id =${id}`);
+        Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where Userid =${id}`);
         _= check db.close();
         if result is sql:NoRowsError {
             return http:NOT_FOUND;
@@ -23,7 +23,7 @@ public class DatabaseService {
         Citizen|http:NotFound|error result = self.getRecord(citizen.UserID);
         if result is http:NotFound{
             mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
-            _ = check db->execute(`
+            _=  check db->execute(`
                 INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID, gramaID)
                 VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID}, ${citizen.gramaID});`);
             _= check db.close();
