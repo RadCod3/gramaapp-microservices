@@ -1,13 +1,23 @@
+import ballerina/http;
+import ballerina/io;
+
+type DecoderConfig record{|
+    string decoderEndpoint;
+|};
+
+
+configurable DecoderConfig decoderConfig = ?;
+
 public class Decorder {
 
     function decode(string accessToken) returns User|error{
-        User dummyUser = {
-        userId: "1",
-        firstName: "John",
-        lastName: "Doe",
-        address: "123 Main Street",
-        gramaAreaId: "MG_01"
-        };
-        return dummyUser;
+        http:Client albumClient = check new (decoderConfig.decoderEndpoint);
+        User|error userResponse = albumClient->/userInfo(accessToken = accessToken);
+        if (userResponse is User) {
+            return userResponse;
+        } else {
+            return error("Error while decoding the access token");
+        }
+        
     }
 }

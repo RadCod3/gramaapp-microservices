@@ -1,14 +1,27 @@
 import ballerina/http;
 import ballerina/io;
 
+type Address record {
+    string country?;
+    string number?;
+    string street?;
+    string gramaDivision?;
+    string district?;
+    string province?;
+};
+
 // Add fields in asgardeo User Attributes
 type UserInfo record {
-    string sub;
-    // string nic;
-    // string name;
-    string email;
-
+    string sub?;
+    string gid_g4?;
+    Address address?;
+    string[] roles?;
+    string userid?;
+    string email?;
+    string username?;
+    string nic_g4?;
 };
+
 
 type AsgardeoConfig record {|
     string asgardeoEndpoint;
