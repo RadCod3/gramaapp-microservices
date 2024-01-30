@@ -29,10 +29,9 @@ public type Request record {|
 
 @http:ServiceConfig {
     cors: {
-        allowOrigins: ["*"]
+        allowOrigins: ["http://localhost:5173", "https://a921784b-aa86-47fa-b966-4b87ad9848c2.e1-us-east-azure.choreoapps.dev", "https://0ddd74be-4919-47a5-a456-343136fe005e.e1-us-east-azure.choreoapps.dev"]
     }
 }
-
 service /idCheck on new http:Listener(8080) {
     private Validator idValidator;
     private IdCheckService idcheckService;
