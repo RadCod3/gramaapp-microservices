@@ -49,7 +49,7 @@ service /management on new http:Listener(9090) {
         Citizen citizen ={    
             gramaID: user.gid_g4, 
             UserID: user.userid, 
-            genderID: 0, 
+            genderID: 1, 
             NIC: user.nic_g4, 
             Name: user.username, 
             accountStatusID: 2};
