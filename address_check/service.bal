@@ -34,13 +34,13 @@ configurable DatabaseConfig dbConfig = ?;
     }
 }
 service / on new http:Listener(9090) {
-    resource function post validateAddress/[string nic](Address address) returns http:Response|error{
+    resource function post validateAddress/[string nic](Address address) returns http:Response|error {
         Person person = check getPerson(nic);
         Address personAddress = check getAddress(person.address);
-        boolean isValid = personAddress.number.equalsIgnoreCaseAscii(address.number) && 
-                            personAddress.street.equalsIgnoreCaseAscii(address.street) && 
-                            personAddress.gramaDivision.equalsIgnoreCaseAscii(address.gramaDivision) && 
-                            personAddress.district.equalsIgnoreCaseAscii(address.district) && 
+        boolean isValid = personAddress.number.equalsIgnoreCaseAscii(address.number) &&
+                            personAddress.street.equalsIgnoreCaseAscii(address.street) &&
+                            personAddress.gramaDivision.equalsIgnoreCaseAscii(address.gramaDivision) &&
+                            personAddress.district.equalsIgnoreCaseAscii(address.district) &&
                             personAddress.province.equalsIgnoreCaseAscii(address.province);
         http:Response response = new;
         response.setJsonPayload(isValid);
@@ -51,14 +51,14 @@ service / on new http:Listener(9090) {
 
     resource function post addAddress(Address address) returns string|int|error? {
         mysql:Client db = check new (...dbConfig);
-        
+
         sql:ParameterizedQuery insertAddress = `INSERT INTO address (number, street, gramaDivision, district, province) 
                                                 VALUES (${address.number}, ${address.street}, ${address.gramaDivision}, 
                                                 ${address.district}, ${address.province})`;
 
         sql:ExecutionResult result = check db->execute(insertAddress);
         string|int? lastInsertId = result.lastInsertId;
-        _= check db.close();
+        _ = check db.close();
         return lastInsertId;
     };
 
@@ -70,24 +70,22 @@ service / on new http:Listener(9090) {
 
         sql:ExecutionResult result = check db->execute(insertPerson);
         string|int? lastInsertId = result.lastInsertId;
-        _= check db.close();
+        _ = check db.close();
         return lastInsertId;
     };
 
     resource function get getPerson(string nic) returns Person|error? {
 
-        return check getPerson(nic);
+        return check getPersonFunc(nic);
     };
-
-
 
 };
 
-function getPerson(string nic) returns Person|error {
+function getPersonFunc(string nic) returns Person|error {
     mysql:Client db = check new (...dbConfig);
     sql:ParameterizedQuery selectPerson = `SELECT nic, firstName, lastName, address FROM person WHERE nic = ${nic}`;
     Person person = check db->queryRow(selectPerson);
-    _= check db.close();
+    _ = check db.close();
     return person;
 };
 
@@ -95,6 +93,6 @@ function getAddress(int addressId) returns Address|error {
     mysql:Client db = check new (...dbConfig);
     sql:ParameterizedQuery selectAddress = `SELECT number, street, gramaDivision, district, province FROM address WHERE addressId = ${addressId}`;
     Address address = check db->queryRow(selectAddress);
-    _= check db.close();
+    _ = check db.close();
     return address;
 };
