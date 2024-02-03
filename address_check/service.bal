@@ -35,7 +35,7 @@ configurable DatabaseConfig dbConfig = ?;
 }
 service / on new http:Listener(9090) {
     resource function post validateAddress/[string nic](Address address) returns http:Response|error {
-        Person person = check getPerson(nic);
+        Person person = check getPersonFunc(nic);
         Address personAddress = check getAddress(person.address);
         boolean isValid = personAddress.number.equalsIgnoreCaseAscii(address.number) &&
                             personAddress.street.equalsIgnoreCaseAscii(address.street) &&
