@@ -5,7 +5,7 @@ DataRetriever dataRetriever = new(asgardeoConfig);
 
 service /getUsers on new http:Listener(9090) {
     
-    resource function post getUser(string userID) returns SimpleUser|error {
+    resource function get getUser(string userID) returns SimpleUser|error {
         GramaOrgUser  gramaOrgUser =  check dataRetriever.fetchUserData(userID);
         SimpleUser user = {
         email: gramaOrgUser.emails[0],

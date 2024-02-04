@@ -9,9 +9,11 @@ import ballerina/http;
 service /management on new http:Listener(9090) {
     private Decorder decorder;
     private DatabaseService databaseService;
+    private UserRetriever userRetriever;
     function init() returns error? {
         self.decorder = new ();
         self.databaseService = new ();
+        self.userRetriever = new ();
     }
 
     public function mapToRequestEntity(User user, GramaRequest gramaRequest, int idcheck, int addresscheck) returns RequestEntity {
@@ -94,9 +96,21 @@ service /management on new http:Listener(9090) {
         _ = check self.databaseService.updateRequest(requestEntity);
         return http:CREATED;
     }
-    resource function get getRequestsbyGramaID(string gramaID) returns RequestEntity[]|error {
+    resource function get getRequestsbyGramaID(string gramaID) returns SuperRequestEntity[]|error {
         RequestEntity[] requests = check self.databaseService.getRequestByGramaID(gramaID);
-        return requests;
+        // Create an array to store the mapped SuperRequestEntity objects
+        SuperRequestEntity[] superRequests = [];
+
+    // Iterate through each RequestEntity and map it to SuperRequestEntity
+        foreach RequestEntity request in requests {
+            SimpleUser simpleUser = check self.userRetriever.getUser(request.userID);
+            string nic=simpleUser.NIC;
+            string name=simpleUser.name;
+            SuperRequestEntity superRequest = mapToSuperRequest(request,nic,name);
+        // Add the mapped object to the array
+            superRequests.push(superRequest);
+         }   
+        return superRequests;
     }
     resource function get getRequestsbyUserID(string userId) returns RequestEntity[]|error {
         RequestEntity[] requests = check self.databaseService.getRequestByUserID(userId);
