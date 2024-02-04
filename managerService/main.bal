@@ -106,8 +106,8 @@ service /management on new http:Listener(9090) {
             SimpleUser simpleUser = check self.userRetriever.getUser(request.userID);
             string nic=simpleUser.NIC;
             string name=simpleUser.name;
-            AddressS address = simpleUser.address;
-            SuperRequestEntity superRequest = mapToSuperRequest(request,name,nic,address);
+            SuperRequestEntity superRequest = mapToSuperRequest(request,name,nic,simpleUser.number,simpleUser.gramaDivision,
+            simpleUser.province,simpleUser.street,simpleUser.district);
         // Add the mapped object to the array
             superRequests.push(superRequest);
          }   

@@ -24,9 +24,14 @@ public type SuperRequestEntity record {
     string gramaID;
     string NIC;
     string name;
-    AddressS address;
+    string number;
+    string street;
+    string gramaDivision;
+    string district;
+    string province;
 };
-public function mapToSuperRequest(RequestEntity request,string name, string nic, AddressS address) returns SuperRequestEntity {
+public function mapToSuperRequest(RequestEntity request,string name, string nic,string number,
+        string gramaID,string province,string street,string district) returns SuperRequestEntity {
     SuperRequestEntity superRequest = {
         requestID: request.requestID,
         userID: request.userID,
@@ -40,8 +45,12 @@ public function mapToSuperRequest(RequestEntity request,string name, string nic,
         characterW: request.characterW, 
         identityCheckstatus: request.identityCheckstatus, 
         addressCheckstatus: request.addressCheckstatus,
-        address : address
-    };
+        number: number,   
+        gramaDivision: gramaID, 
+        province: province, 
+        street: street, 
+        district: district
+        };
 
     // Additional logic to map other fields if needed
 
