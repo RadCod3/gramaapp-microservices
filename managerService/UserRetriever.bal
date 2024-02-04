@@ -1,5 +1,4 @@
 import ballerina/http;
-import ballerina/io;
 type UserConfig record{|
     string userEndpoint;
 |};
@@ -13,7 +12,6 @@ public class UserRetriever{
         if (userResponse is SimpleUser) {
             return userResponse;
         } else {
-            io:println(userResponse.message());
             return error("Error while decoding the access token");
         }
         
