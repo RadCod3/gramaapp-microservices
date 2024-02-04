@@ -12,7 +12,7 @@ public class UserRetriever{
         if (userResponse is SimpleUser) {
             return userResponse;
         } else {
-            return error("Error while decoding the access token");
+            return error(userResponse.message());
         }
         
     }
