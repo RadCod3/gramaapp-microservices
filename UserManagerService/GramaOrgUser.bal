@@ -17,25 +17,25 @@ type Name record {
 };
 
 type Urn\:scim\:wso2\:schema record {
-    string accountState;
-    string accountLocked;
+    // string accountState;
+    // string accountLocked;
     string country;
     string userSource;
     string nic;
     string idpType;
-    string failedLoginAttempts;
-    string accountConfirmedTime;
+    // string failedLoginAttempts;
+    // string accountConfirmedTime;
     string address_number;
     string nic_g4;
-    string emailVerified;
+    // string emailVerified;
     string gid_g4;
     string address_province;
     string lastLogonTime;
     string preferredChannel;
     string address_street;
-    string unlockTime;
+    // string unlockTime;
     string isReadOnlyUser;
-    string failedLoginAttemptsBeforeSuccess;
+    // string failedLoginAttemptsBeforeSuccess;
     string address_district;
 };
 
