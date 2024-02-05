@@ -6,27 +6,27 @@ import ballerinax/mysql.driver as _;
 configurable DatabaseConfig dbConfig = ?;
 
 public class DatabaseService {
-    public function createDB() returns mysql:Client|error{
-        return check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.defaultdb,dbConfig.port);
+    public function createDB() returns mysql:Client|error {
+        return check new (dbConfig.url, dbConfig.userName, dbConfig.password, dbConfig.defaultdb, dbConfig.port);
     }
-    public function getRecord(string id) returns Citizen|http:NotFound|error{
-        mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
+    public function getRecord(string id) returns Citizen|http:NotFound|error {
+        mysql:Client db = check new (dbConfig.url, dbConfig.userName, dbConfig.password, dbConfig.citizendb, dbConfig.port);
         Citizen|sql:Error result = db->queryRow(`SELECT * FROM Citizen where Userid =${id}`);
-        _= check db.close();
+        _ = check db.close();
         if result is sql:NoRowsError {
             return http:NOT_FOUND;
         } else {
             return result;
         }
     }
-    public function insertCitizen(Citizen citizen) returns Citizen|error{
+    public function insertCitizen(Citizen citizen) returns Citizen|error {
         Citizen|http:NotFound|error result = self.getRecord(citizen.UserID);
-        if result is http:NotFound{
-            mysql:Client db = check new (dbConfig.url,dbConfig.userName,dbConfig.password,dbConfig.citizendb,dbConfig.port);
-            _=  check db->execute(`
+        if result is http:NotFound {
+            mysql:Client db = check new (dbConfig.url, dbConfig.userName, dbConfig.password, dbConfig.citizendb, dbConfig.port);
+            _ = check db->execute(`
                 INSERT INTO Citizen (Userid,NIC, Name, genderID, accountStatusID, gramaID)
                 VALUES (${citizen.UserID},${citizen.NIC}, ${citizen.Name}, ${citizen.genderID}, ${citizen.accountStatusID}, ${citizen.gramaID});`);
-            _= check db.close();
+            _ = check db.close();
         }
         return citizen;
     }
@@ -38,7 +38,7 @@ public class DatabaseService {
         VALUES (${request.userID}, ${request.reason}, ${request.requestTypeID},
                 ${request.policeCheckstatus}, ${request.identityCheckstatus}, 
                 ${request.addressCheckstatus}, ${request.statusID}, ${request.gramaID});`);
-        _= check db.close();
+        _ = check db.close();
         return true;
     }
     public function getRequestByGramaID(string gramaID) returns RequestEntity[]|error {
@@ -48,7 +48,7 @@ public class DatabaseService {
             SELECT * FROM request WHERE gramaID = ${gramaID}`);
 
         // Process the stream and convert results to Request[] or return error
-        _= check db.close();
+        _ = check db.close();
         return from RequestEntity request in requestStream
             select request;
     }
@@ -56,10 +56,10 @@ public class DatabaseService {
         mysql:Client db = check self.createDB();
         // Execute the SQL query to fetch records based on userID
         stream<RequestEntity, sql:Error?> requestStream = db->query(`
-            SELECT * FROM request WHERE userID = ${userID}`);
+            SELECT * FROM request WHERE userID = ${userID} ORDER BY requestID DESC`);
 
         // Process the stream and convert results to RequestEntity[] or return error
-        _= check db.close();
+        _ = check db.close();
         return from RequestEntity request in requestStream
             select request;
     }
@@ -69,7 +69,7 @@ public class DatabaseService {
         sql:ParameterizedQuery pQuery = `SELECT * FROM request WHERE requestID = ${requestID}`;
 
         RequestEntity request = checkpanic db->queryRow(pQuery, RequestEntity);
-        _= check db.close();
+        _ = check db.close();
 
         return request;
     }
@@ -89,7 +89,7 @@ public class DatabaseService {
             gramaID = ${request.gramaID}
         WHERE requestID = ${request.requestID};
     `);
-        _= check db.close();
+        _ = check db.close();
         return http:CREATED;
     }
 
