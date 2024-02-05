@@ -18,6 +18,17 @@ type Person record {|
     int address;
 |};
 
+type PersonAddress record {|
+    string nic;
+    string firstName;
+    string lastName;
+    string number;
+    string street;
+    string gramaDivision;
+    string district;
+    string province;
+|};
+
 type DatabaseConfig record {|
     string host;
     int port;
@@ -79,6 +90,11 @@ service / on new http:Listener(9090) {
         return check getPersonFunc(nic);
     };
 
+    resource function get getPersonAddress(string nic) returns PersonAddress|error? {
+
+        return check getPersonAddressFunc(nic);
+    };
+
 };
 
 function getPersonFunc(string nic) returns Person|error {
@@ -87,6 +103,14 @@ function getPersonFunc(string nic) returns Person|error {
     Person person = check db->queryRow(selectPerson);
     _ = check db.close();
     return person;
+};
+
+function getPersonAddressFunc(string nic) returns PersonAddress|error {
+    mysql:Client db = check new (...dbConfig);
+    sql:ParameterizedQuery selectPerson = `SELECT nic, firstName, lastName, number, street, gramaDivision, district, province FROM person left join address on person.address = address.addressId WHERE nic = ${nic}`;
+    PersonAddress personAddress = check db->queryRow(selectPerson);
+    _ = check db.close();
+    return personAddress;
 };
 
 function getAddress(int addressId) returns Address|error {
