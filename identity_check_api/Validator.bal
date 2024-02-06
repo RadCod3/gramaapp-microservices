@@ -29,7 +29,7 @@ public class Validator{
     } 
 
     public function validateDB(string id,string UserID,string Name,string grama_id) returns int|error{
-        Citizen|http:NotFound|error citizen = self.idCheckService.getRecord(id);
+        Citizen|http:NotFound|error citizen = self.idCheckService.getRecord(UserID);
         if citizen is http:NotFound{
             Citizen newCitizen = {
                 UserID:UserID,
@@ -42,6 +42,7 @@ public class Validator{
             _ = check self.idCheckService.insertRecord(newCitizen);
             return 1;
         }else if citizen is Citizen{
+            io:println(citizen.accountStatusID);
             return citizen.accountStatusID-1;
         }else{
             io:println(citizen);
